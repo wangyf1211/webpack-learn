@@ -44,7 +44,7 @@ const {
 } = setMPA()
 
 module.exports = {
-  entry: entry,
+  entry,
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name]_[chunkhash:8].js'
