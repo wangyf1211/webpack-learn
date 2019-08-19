@@ -5,11 +5,43 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const {
   CleanWebpackPlugin
 } = require('clean-webpack-plugin')
+const glob = require('glob')
+const setMPA = () => {
+  const entry = {}
+  const htmlWebpackPlugins = []
+  const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'))
+  Object.keys(entryFiles).map((index) => {
+    const entryFile = entryFiles[index]
+    const match = entryFile.match(/src\/(.*)\/index\.js/)
+    const pageName = match && match[1]
+    entry[pageName] = entryFile
+    htmlWebpackPlugins.push(
+      new HtmlWebpackPlugin({
+        template: path.join(__dirname, `src/${pageName}/index.html`),
+        filename: `${pageName}.html`,
+        chunks: [pageName],
+        inject: true,
+        minify: {
+          html5: true,
+          minifyCSS: true,
+          minifyJS: true,
+          collapseWhitespace: true,
+          preserveLineBreaks: false,
+          removeComments: true
+        }
+      }))
+  })
+  return {
+    entry,
+    htmlWebpackPlugins
+  }
+}
+const {
+  entry,
+  htmlWebpackPlugins
+} = setMPA()
 module.exports = {
-  entry: {
-    app: './src/index.js',
-    search: './src/search.js'
-  },
+  entry,
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name].js'
@@ -52,26 +84,14 @@ module.exports = {
   mode: 'development',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-      chunks: ['search'],
-      inject: true,
-      minify: {
-        html5: true,
-        minifyJS: true,
-        minifyCSS: true,
-        preserveLineBreaks: false,
-        collapseWhitespace: true,
-        removeComments: true
-      }
-    }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name]_[contenthash:8].css'
     })
-  ],
+  ].concat(htmlWebpackPlugins),
   devServer: {
     contentBase: './dist',
     hot: true
-  }
+  },
+  devtool: 'source-map'
 }

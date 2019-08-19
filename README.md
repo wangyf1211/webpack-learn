@@ -207,3 +207,13 @@ const setMPA = () => {
   }
 }
 ```
+
+## sourcemap
+通过sourcemap定位源代码，线上环境关闭，但是sourcemap可以配置在错误监控系统帮助定位问题
+
+### sourcemap关键字
++ eval：使用eval包裹模块代码
++ source map：产生.map文件
++ cheap：不包含列信息
++ inline：将.map作为DataURI嵌入，不单独生成.map文件
++ module：包含loader的sourcemap

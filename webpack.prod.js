@@ -97,5 +97,6 @@ module.exports = {
       assetNameRegExp: /\.css$/,
       cssProcessor: require('cssnano')
     })
-  ].concat(htmlWebpackPlugins)
+  ].concat(htmlWebpackPlugins),
+  devtool: 'inline-sourcemap'
 }
