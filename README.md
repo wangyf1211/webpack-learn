@@ -61,7 +61,9 @@ module:{
         loader:'postcss-loader',
         options:{
           plugins:()=>[
-            require('autoprefixer')()
+            require('autoprefixer')({
+              browsers: ['last 2 version', '>1%', 'iOS 7']
+            })
           ]
         }
       }
@@ -73,3 +75,4 @@ module:{
 得到提示消息**Replace Autoprefixer browsers option to Browserslist config.
   Use browserslist key in package.json or .browserslistrc file.**
 
+根据提示信息，将browsers去掉添加browserslist字段到package.json或者添加.browserslistrc浏览器支持配置文件就ok了
