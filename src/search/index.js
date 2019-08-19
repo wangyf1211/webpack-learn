@@ -8,6 +8,7 @@ import logo from './img/logo.png'
 
 class Search extends React.Component {
   render () {
+    debugger;
     return <div> Hello webpack react test HMR
       <img src={logo} alt="logo" />
     </div>;
