@@ -2,11 +2,11 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'css/search.css';
+import './css/search.css';
 
 class Search extends React.Component {
   render () {
-    return <div> Hello webpack react</div>;
+    return <div> Hello webpack react test HMR</div>;
   }
 }
 
