@@ -77,3 +77,31 @@ module:{
   Use browserslist key in package.json or .browserslistrc file.**
 
 根据提示信息，将browsers去掉添加browserslist字段到package.json或者添加.browserslistrc浏览器支持配置文件就ok了
+
+## 移动端适配px2rem-loader+lib-flexible
+安装包
+
+<code>npm i px2rem-loader -D</code>
+
+<code>npm i lib-flexible -S</code>
+配置如下:
+```
+module:{
+  rules:[
+    {
+      test:/\.css$/,
+      use:[
+        MiniCssExtractPlugin.loader,
+        'css-loader',
+        {
+          loader:'px2rem-loader',
+          options:{
+            remUnit:75,
+            remPrecision:8
+          }
+        }
+      ]
+    }
+  ]
+}
+```

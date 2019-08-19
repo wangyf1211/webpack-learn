@@ -21,7 +21,21 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader', {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [
+                require('autoprefixer')()
+              ]
+            }
+          },
+          {
+            loader: 'px2rem-loader',
+            options: {
+              remUnit: 75
+            }
+          }
+        ]
       },
       {
         test: /\.(png|gif|jpg|jpeg|svg)$/,

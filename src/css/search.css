@@ -1,9 +1,11 @@
 div {
-  font: 20px;
+  font: 1000px;
   color: #555;
 }
 
 img {
   display: flex;
   margin: 0 auto;
+  width: 100px;
+  height: 100px;
 }

@@ -31,6 +31,12 @@ module.exports = {
                 require('autoprefixer')()
               ]
             }
+          },
+          {
+            loader: 'px2rem-loader',
+            options: {
+              remUnit: 75
+            }
           }
         ]
       },
