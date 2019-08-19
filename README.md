@@ -35,3 +35,41 @@ plugins:[
     inject:true,
   })
 ]
+```
+
+## autoPrefixer自动补全前缀
+四种浏览器内核
+| 内核    | 浏览器  | 前缀    |
+| ------- | ------- | ------- |
+| Trident | IE      | ms-     |
+| Geko    | Firefox | moz-    |
+| Webkit  | Chrome  | webkit- |
+| Presto  | Opera   | o-      |
+
+通过autoprefixer结合postcss-loader使用
+<code>npm i autoprefixer postcss-loader -D</code>
+
+配置如下：
+```
+module:{
+  rules:[
+    test:/\.css$/,
+    use:[
+      MiniCssExactPlugin.loader,
+      'css-loader',
+      {
+        loader:'postcss-loader',
+        options:{
+          plugins:()=>[
+            require('autoprefixer')()
+          ]
+        }
+      }
+    ]
+  ]
+}
+```
+
+得到提示消息**Replace Autoprefixer browsers option to Browserslist config.
+  Use browserslist key in package.json or .browserslistrc file.**
+
