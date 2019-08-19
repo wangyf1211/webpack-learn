@@ -158,3 +158,52 @@ npm i raw-loader@0.5.1 -D
   </script>
   ```
   以内联的方式引入<code>lib-flexible</code>
+
+
+## 多页面打包基本思路
+每个页面对应一个entry以及一个html-webpack-plugin，缺点每添加一次页面都要重新配置
+
+### 通用方法
+动态获取entry和设置html-webpack-plugin数量
+
+利用<code>glob.sync</code>
+```
+entry:glob.sync(path.join(__dirname,'./src/*/index.js'))
+```
+glob类似通配符匹配
+
+<code>npm i glob -D</code>
+```
+const glob = require('glob')
+
+const setMPA = () => {
+  const entry = {}
+  const htmlWebpackPlugins = []
+  const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'))
+  Object.keys(entryFiles).map((index) => {
+    const entryFile = entryFiles[index]
+    const match = entryFile.match(/src\/(.*)\/index\.js/)
+    const pageName = match && match[1]
+    entry[pageName] = entryFile
+    htmlWebpackPlugins.push(
+      new HtmlWebpackPlugin({
+        template: path.join(__dirname, `src/${pageName}/index.html`),
+        filename: `${pageName}.html`,
+        chunks: [pageName],
+        inject: true,
+        minify: {
+          html5: true,
+          minifyCSS: true,
+          minifyJS: true,
+          collapseWhitespace: true,
+          preserveLineBreaks: false,
+          removeComments: true
+        }
+      }))
+  })
+  return {
+    entry,
+    htmlWebpackPlugins
+  }
+}
+```
