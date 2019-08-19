@@ -105,3 +105,56 @@ module:{
   ]
 }
 ```
+lib-flexible通过将代码复制粘贴的硬核方式引入index.html中
+
+## 资源内联
+代码层面：
++ 页面框架的初始化脚本
++ 上报相关打点
++ css内联避免页面闪动FOUC
+
+请求层面：减少HTTP请求数
++ 小图片或者字体内联(使用url-loader)
+
+那么如何配置资源内联呢？
+### html内联
+```
+<head>${require('raw-loader!./meta.html')}</head>
+```
+### js内联
+```
+<script>${require(require('raw-loader!babel-loader!../node_modules/lib-flexible/flexible.js'))}</script>
+```
+通过<code>raw-loader 0.5.1</code>
+
+### css内联
+1. style-loader
+配置如下
+```
+{
+  test:/\.css$/,
+  use:[
+    {
+      loader:'style-loader',
+      options:{
+        insertAt:'top',
+        singleton:true
+      }
+    },
+    'css-loader'
+  ]
+}
+```
+2. html-inline-css-webpack-plugin
+
+安装raw-loader@0.5.1
+```
+npm i raw-loader@0.5.1 -D
+```
+添加如下
+```
+  <script>
+    ${require('raw-loader!babel-loader!../node_modules/lib-flexible/flexible.js').default}
+  </script>
+  ```
+  以内联的方式引入<code>lib-flexible</code>
