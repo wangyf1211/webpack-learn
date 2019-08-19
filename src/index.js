@@ -1,1 +1,1 @@
-document.write('index content')
+document.write('index content test ')

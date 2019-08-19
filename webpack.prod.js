@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const {
   CleanWebpackPlugin
 } = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 module.exports = {
   entry: {
     app: './src/index.js',
@@ -10,7 +12,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name].js'
+    filename: '[name]_[chunkhash:8].js'
   },
   module: {
     rules: [{
@@ -19,7 +21,19 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader'
+        ]
+      },
+      {
+        test: /\.(png|gif|jpg|jpeg|svg)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: '[name]_[hash:8].[ext]'
+          }
+        }
       }
     ]
   },
@@ -32,9 +46,19 @@ module.exports = {
       minify: {
         html5: true,
         minifyJS: true,
-        minifyCSS: true
+        minifyCSS: true,
+        collapseWhitespace: true,
+        preserveLineBreaks: false,
+        removeComments: true
       }
     }),
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[name]_[contenthash:8].css'
+    }),
+    new OptimizeCssAssetsPlugin({
+      assetNameRegExp: /\.css$/,
+      cssProcessor: require('cssnano')
+    })
   ]
 }

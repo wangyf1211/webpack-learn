@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const {
   CleanWebpackPlugin
 } = require('clean-webpack-plugin')
@@ -20,7 +21,16 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
+      },
+      {
+        test: /\.(png|gif|jpg|jpeg|svg)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: '[name]_[hash:8].[ext]'
+          }
+        }
       }
     ]
   },
@@ -34,10 +44,16 @@ module.exports = {
       minify: {
         html5: true,
         minifyJS: true,
-        minifyCSS: true
+        minifyCSS: true,
+        preserveLineBreaks: false,
+        collapseWhitespace: true,
+        removeComments: true
       }
     }),
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[name]_[contenthash:8].css'
+    })
   ],
   devServer: {
     contentBase: './dist',

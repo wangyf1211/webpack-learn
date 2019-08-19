@@ -1,4 +1,9 @@
 div {
   font: 20px;
-  color: skyblue;
+  color: #555;
+}
+
+img {
+  display: block;
+  margin: 0 auto;
 }
